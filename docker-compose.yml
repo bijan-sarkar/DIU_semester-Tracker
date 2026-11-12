@@ -1,0 +1,56 @@
+services:
+  # PostgreSQL Database (Supabase compatible)
+  db:
+    image: postgres:16-alpine
+    container_name: diu_tracker_db
+    restart: always
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgrespassword
+      POSTGRES_DB: diu_tracker
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres -d diu_tracker"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+  # FastAPI Backend API Server
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    container_name: diu_tracker_backend
+    restart: always
+    ports:
+      - "8000:8000"
+    environment:
+      - DATABASE_URL=postgresql://postgres:postgrespassword@db:5432/diu_tracker
+      - JWT_SECRET=diu_cse_tracker_super_secret_jwt_key_2026_antigravity
+      - ACCESS_TOKEN_EXPIRE_MINUTES=10080
+      - CORS_ORIGINS=["http://localhost:5173","http://localhost:3000","http://127.0.0.1:5173","http://localhost:8000","*"]
+    depends_on:
+      db:
+        condition: service_healthy
+
+  # Vite React Frontend Development Server
+  frontend:
+    image: node:20-alpine
+    container_name: diu_tracker_frontend
+    working_dir: /app
+    volumes:
+      - ./frontend:/app
+      - /app/node_modules
+    ports:
+      - "5173:5173"
+    environment:
+      - VITE_API_BASE_URL=http://localhost:8000
+    command: sh -c "npm install && npm run dev -- --host 0.0.0.0"
+    depends_on:
+      - backend
+
+volumes:
+  postgres_data:

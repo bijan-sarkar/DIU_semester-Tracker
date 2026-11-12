@@ -1,0 +1,44 @@
+<!doctype html>
+<html lang="en" class="dark">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/svg+xml" href="/icon.svg" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="theme-color" content="#10b981" />
+    <meta name="color-scheme" content="dark light" />
+    <meta name="description" content="DIU CSE Semester & Exam Tracker - Track course syllabi, predict DIUQBank exam probabilities, and benchmark with MIT & Stanford curricula." />
+    <link rel="manifest" href="/manifest.json" />
+
+    <!-- Google Fonts: Plus Jakarta Sans -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" />
+
+    <title>DIU CSE Semester & Exam Tracker</title>
+
+    <!-- Theme initialization to prevent FOUC -->
+    <script>
+      (function() {
+        const savedTheme = localStorage.getItem('theme');
+        if (savedTheme === 'light') {
+          document.documentElement.classList.remove('dark');
+        } else {
+          document.documentElement.classList.add('dark');
+        }
+      })();
+    </script>
+  </head>
+  <body class="bg-[#f8fafc] dark:bg-[#0b0f17] text-slate-900 dark:text-slate-100 font-sans min-h-screen antialiased selection:bg-emerald-500 selection:text-white transition-colors duration-300">
+    <div id="root"></div>
+    <script type="module" src="/src/main.tsx"></script>
+    <script>
+      if ('serviceWorker' in navigator) {
+        window.addEventListener('load', () => {
+          navigator.serviceWorker.register('/service-worker.js').catch(err => {
+            console.log('ServiceWorker registration skipped or unsupported in environment:', err);
+          });
+        });
+      }
+    </script>
+  </body>
+</html>

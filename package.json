@@ -1,0 +1,13 @@
+{
+  "name": "diu-semester-tracker",
+  "version": "1.0.0",
+  "description": "DIU CSE Semester & Exam Tracker PWA",
+  "private": true,
+  "scripts": {
+    "dev:backend": "cd backend && ..\\.venv\\Scripts\\python.exe -m uvicorn app.main:app --reload --port 8000",
+    "dev:frontend": "cd frontend && npm.cmd run dev",
+    "build:frontend": "cd frontend && npm.cmd run build",
+    "seed": "cd backend && ..\\.venv\\Scripts\\python.exe seed_data.py",
+    "test:backend": "cd backend && ..\\.venv\\Scripts\\python.exe -m pytest"
+  }
+}
